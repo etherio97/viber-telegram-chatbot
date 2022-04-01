@@ -1,6 +1,6 @@
 const telegramController = require('../../src/telegram.controller');
 
-exports.handler = async (req, res) => {
+module.exports = async (req, res) => {
   try {
     let method = req.method;
     let data = req.body;
@@ -18,7 +18,7 @@ exports.handler = async (req, res) => {
       .send('Bad request!');
     
     await telegramController
-      .handle(data);
+      .handle(dat);
     
     res.status(204).end();
     

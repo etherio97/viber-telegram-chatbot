@@ -1,6 +1,6 @@
 const viberController = require('../../src/viber.controller');
 
-exports.handler = async (req, res) => {
+module.exports = async (req, res) => {
   try {
     let method = req.method;
     let data = req.body;
