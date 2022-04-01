@@ -1,12 +1,6 @@
 const { default: axios } = require('axios');
 
-const requestApi = (data) =>
-  axios
-  .post('https://chatapi.viber.com/pa/send_message', data, {
-    headers: {
-      'X-Viber-Auth-Token': process.env.VIBER_BOT_TOKEN,
-    },
-  });
+const requestApi = (data) => axios.post('https://chatapi.viber.com/pa/send_message', data, { headers: { 'X-Viber-Auth-Token': process.env.VIBER_BOT_TOKEN } });
 
 class ViberController {
   async handle({
