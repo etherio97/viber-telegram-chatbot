@@ -23,7 +23,8 @@ module.exports = async (req, res) => {
     res.status(204).end();
 
   } catch (e) {
+    console.error(e);
     res.status(500)
-      .send('Something went wrong!');
+      .send(e.message);
   }
 };
