@@ -13,7 +13,7 @@ class TelegramController {
         chat_id: (message.chat||message.sender).id,
         ...reply,
       };
-      await requestApi('/sendMessage', data);
+      await requestApi('sendMessage', data);
     }
   }
 
