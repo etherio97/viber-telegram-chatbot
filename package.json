@@ -4,6 +4,7 @@
     "cors": "*",
     "csurf": "*",
     "express": "*",
+    "express-session": "*",
     "helmet": "*"
   }
 }
