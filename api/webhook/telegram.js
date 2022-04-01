@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
       .send('Bad request!');
     
     await telegramController
-      .handle(dat);
+      .handle(data);
     
     res.status(204).end();
     
