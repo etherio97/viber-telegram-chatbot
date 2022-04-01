@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
 
     if (token != 'etherio') return res.status(403).send('Invalid or wrong token!');
     
-    if (!body) return res.status(400)
+    if (!data) return res.status(400)
       .send('Bad request!');
     
     await telegramController
