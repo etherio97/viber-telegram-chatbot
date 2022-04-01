@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "axios": "*"
+    "axios": "*",
+    "cors": "*",
+    "csurf": "*",
+    "express": "*",
+    "helmet": "*"
   }
 }
