@@ -21,11 +21,11 @@ app.use(cors());
 
 app.use(helmet());
 
-app.get('/', (req, res) => {
+app.get('/api/demo', (req, res) => {
   res.send('OK');
 });
 
-app.post('/', (req, res) => {
+app.post('/api/demo', (req, res) => {
   res.status(201).send('Accepted');
 });
 
