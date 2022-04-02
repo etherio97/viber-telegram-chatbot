@@ -1,8 +1,9 @@
 const cors = require('cors');
 const csurf = require('csurf');
 const express = require('express');
-const helmet= require('helmet');
+const helmet = require('helmet');
 const session = require('express-session');
+const axios = require('axios').default;
 
 const app = express();
 
@@ -27,6 +28,12 @@ app.get('/api/demo', (req, res) => {
 
 app.post('/api/demo', (req, res) => {
   res.status(201).send('Accepted');
+});
+
+app.get('/api/demo/ip', (req, res) => {
+  let ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() ||
+    req.socket.remoteAddress;
+  res.json({ ip });
 });
 
 module.exports = app;
