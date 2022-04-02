@@ -1,13 +1,13 @@
 {
   "public": true,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "./api/index.js"
+      "src": "/(.*)",
+      "dest": "./api/index.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "./public/404.html"
+      "src": "/(.*)",
+      "dest": "./public/404.html"
     }
   ]
 }
