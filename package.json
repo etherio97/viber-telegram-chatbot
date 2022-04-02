@@ -1,4 +1,9 @@
 {
+  "name": "ethereal-webhook-handler",
+  "description": "Handle Webhook Events for Viber & Telegram Chatbot",
+  "version": "1.0.0",
+  "license": "ISC",
+  "private": true,
   "dependencies": {
     "axios": "*",
     "cors": "*",
