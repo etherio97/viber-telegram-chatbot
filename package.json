@@ -4,11 +4,20 @@
   "version": "1.0.0",
   "license": "ISC",
   "private": true,
+  "scripts": {
+    "serve": "vercel dev"
+  },
   "dependencies": {
-    "axios": "*",
-    "cors": "*",
-    "csurf": "*",
-    "express": "*",
-    "helmet": "*"
+    "axios": "^0.26.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2"
+  },
+  "devDependencies": {
+    "vercel": "^24.0.1"
+  },
+  "engines": {
+    "node": ">14.0.0",
+    "yarn": ">1.22.0"
   }
 }

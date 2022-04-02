@@ -1,0 +1,13 @@
+{
+  "public": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "./api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "./public/404.html"
+    }
+  ]
+}
