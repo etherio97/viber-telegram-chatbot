@@ -5,8 +5,12 @@
       "destination": "./api/webhook/telegram.js"
     },
     {
-      "source": "/(.*)",
+      "source": "/:match*",
       "destination": "./api/index.js"
+    },
+    {
+      "source": "/",
+      "destination": "./public/404.html"
     }
   ]
 }
