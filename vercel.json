@@ -1,13 +1,12 @@
 {
-  "public": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/webhook/telegram",
-      "dest": "./api/webhook/telegram.js"
+      "source": "/api/webhook/telegram",
+      "destination": "./api/webhook/telegram.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "./api/index.js"
+      "source": "/(.*)",
+      "destination": "./api/index.js"
     }
   ]
 }
