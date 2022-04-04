@@ -1,4 +1,5 @@
 import axios from 'axios';
+import supabase from '../../src/app/supabase';
 
 const requestApi = (path, data) =>
   axios.post(
@@ -9,7 +10,7 @@ const requestApi = (path, data) =>
 class TelegramController {
   async handle({ message }) {
     if (!message) return;
-    let replies = this.handleMessage(message);
+    let replies = await this.handleMessage(message);
     for (let reply of replies) {
       let data = {
         chat_id: (message.chat || message.sender).id,
@@ -19,10 +20,25 @@ class TelegramController {
     }
   }
 
-  handleMessage({ chat, from, text, entities }) {
+  async handleMessage({ chat, from, text, entities }) {
     if (Array.isArray(entities) && this.isBotCommand(entities)) {
       return this.handleBotCommand(text);
     }
+
+    let words = supabase.get('/dblist', {
+      select: '*',
+      word: 'like.' + text
+    })
+
+    if (words.length) {
+      return [
+        {
+          text: `*${words[0].word}* ${words[0].state}\n${words[0].def}`,
+          parse_mode: 'markdown'
+        }
+      ]
+    }
+
     return [
       {
         text: "I don't under!stand what you mean 😓",
