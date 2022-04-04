@@ -37,7 +37,7 @@ class TelegramController {
 
     if (words.length) {
       return words.map((w) => ({
-        text: `*${w.word}* ${w.state}\n${w.def}`,
+        text: `*${w.word}* _${w.state}_\n${w.defination}`,
         parse_mode: 'markdown'
       }));
     }
