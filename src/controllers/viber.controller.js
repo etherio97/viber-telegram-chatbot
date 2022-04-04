@@ -62,7 +62,7 @@ class ViberController {
     });
 
     if (words.length) {
-      this.response.push(
+      this.response.messages.push(
         ...words.map((w) => ({
           type: 'text',
           text: `*${w.word}* _(${w.state})_\n${w.defination}`,
