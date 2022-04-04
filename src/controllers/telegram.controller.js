@@ -2,13 +2,10 @@ import supabase from '../app/supabase';
 import { TelegramResponse } from '../app/TelegramResponse';
 
 class TelegramController {
-  constructor() {
-    this.response = new TelegramResponse();
-  }
-
   async handle(payload) {
     if (payload.message) {
       let sender = payload.message.chat || payload.message.from;
+      this.response = new TelegramResponse();
       await this.handleEvent(payload.message);
       await this.response.send(sender.id);
     }

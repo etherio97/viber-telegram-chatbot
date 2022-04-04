@@ -2,12 +2,9 @@ import supabase from '../app/supabase';
 import { ViberResponse } from '../app/ViberResponse';
 
 class ViberController {
-  constructor() {
-    this.response = new ViberResponse();
-  }
-
   async handle(payload) {
     let sender = payload.sender || payload.user || { id: payload.user_id };
+    this.response = new ViberResponse();
     await this.handleEvent(payload);
     await this.response.send(sender.id);
   }
