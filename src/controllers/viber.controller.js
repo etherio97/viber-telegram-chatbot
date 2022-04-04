@@ -27,7 +27,7 @@ class ViberController {
     if (words.length) {
       this.response.generateResponse(words);
     } else {
-      this.response.getFallbackMessages();
+      this.response.generateFallback();
     }
   }
 }

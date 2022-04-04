@@ -37,7 +37,7 @@ class TelegramController {
     if (words.length) {
       this.response.generateResponse(words);
     } else {
-      this.response.generateFallback(payload);
+      this.response.generateFallback();
     }
   }
 
