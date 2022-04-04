@@ -8,7 +8,7 @@ class Supabase {
         return this.requestApi('GET', this.buildUrl(path, params));
     }
 
-    push(path, data) {
+    post(path, data) {
         return this.requestApi('POST', this.buildUrl(path), data);
     }
 
@@ -16,11 +16,11 @@ class Supabase {
         return this.requestApi('PUT', this.buildUrl(path), data);
     }
 
-    update(path, data) {
+    patch(path, data) {
         return this.requestApi('PATCH', this.buildUrl(path), data);
     }
 
-    remove(path) {
+    delete(path) {
         return this.requestApi('DELETE', this.buildUrl(path));
     }
 

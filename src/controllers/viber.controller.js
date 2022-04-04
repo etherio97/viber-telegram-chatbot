@@ -53,13 +53,11 @@ class ViberController {
 
     if (!message.text) return [];
     
-    let words = await supabase.get('/rest/v1/dblist', {
-      select: '*',
-      word: 'like.' + message.text.trim()
-    }).catch((e) => {
-      console.log('webhook.viber#error', e);
-      return [];
-    });
+    let words = await supabase.post('/rest/v1/rpc/find_word', { w: message.text.trim() })
+      .catch((e) => {
+        console.log('webhook.viber#error', e);
+        return [];
+      });
 
     if (words.length) {
       this.response.messages.push(

@@ -25,13 +25,11 @@ class TelegramController {
       return this.handleBotCommand(text);
     }
 
-    let words = await supabase.get('/rest/v1/dblist', {
-      select: '*',
-      word: 'like.' + text?.trim()
-    }).catch((e) => {
-      console.log('webhook.webhook.telegram#error', e);
-      return [];
-    });
+    let words = await supabase.post('/rest/v1/rpc/find_word', { w: text })
+      .catch((e) => {
+        console.log('webhook.webhook.telegram#error', e);
+        return [];
+      });
 
     if (words.length) {
       return [
