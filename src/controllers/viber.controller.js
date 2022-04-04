@@ -35,23 +35,17 @@ class ViberController {
   }
 
   onSubscribe({ user }) {
-    return db.put(`viber_subscribers/${user.id}`, {
-      ...user,
-      sent_unknown: false,
-      updatedCount: 0,
-      updatedAt: { '.sv': 'timestamp' },
-      createdAt: { '.sv': 'timestamp' },
-    });
+    return;
   }
 
   onUnsubscribed({ user_id }) {
-    return db.remove(`viber_subscribers/${user_id}`);
+    return;
   }
 
   async onMessage(payload) {
     let { message } = payload;
 
-    if (!message.text) return [];
+    if (!message.text) return;
     
     let words = await supabase.post('/rest/v1/rpc/find_word', { w: message.text.trim() })
       .catch((e) => {
@@ -60,49 +54,25 @@ class ViberController {
       });
 
     if (words.length) {
-      this.response.messages.push(
-        ...words.map((w) => ({
-          type: 'text',
-          text: `*${w.word}* _(${w.state})_\n${w.defination}`,
-        }))
-      );
-      return [];
+      return this.response.messages.push({
+        type: 'text',
+        text: words.map(
+            w => `*${w.word}* _(${w.state})_\n${w.defination}`,
+          ).join('\n\n'),
+      });
     }
 
-    // if (TextMessageUtil.isGreeting(message.text)) {
-    //  return this.sendGreeting(payload);
-    // }
-
-    return this.sendUnknown(payload);
+    this.sendUnknown(payload);
   }
 
   sendGreeting({ user, sender, user_id }) {
     sender = sender || user || { id: user_id };
-
-    return db.get(`viber_subscribers/${sender.id}`).then((user) => {
-      this.response.sendGreeting(user);
-
-      if (user?.sent_unknown) {
-        return db.update(`viber_subscribers/${sender.id}`, {
-          sent_unknown: false,
-          updatedCount: { '.sv': { increment: 1 } },
-          updatedAt: { '.sv': 'timestamp' },
-        });
-      }
-    });
+    return this.response.sendGreeting(user);
   }
 
   sendUnknown({ user, sender, user_id }) {
     sender = sender || user || { id: user_id };
-    return db.get(`viber_subscribers/${sender.id}`).then((user) => {
-      //if (user && user.sent_unknown) return;
-      this.response.sendUnknown(sender);
-      return db.update(`viber_subscribers/${sender.id}`, {
-        sent_unknown: true,
-        updatedCount: { '.sv': { increment: 1 } },
-        updatedAt: { '.sv': 'timestamp' },
-      });
-    });
+    return this.response.sendUnknown(sender);
   }
 }
 
