@@ -37,14 +37,16 @@ class Supabase {
     }
 
     requestApi(method, url, data = null) {
+        let headers = {
+            apikey: SUPABASE_KEY,
+            Authorization: 'Bearer ' + SUPABASE_KEY
+        };
+        console.log({ url: url.toString(), headers });
         return axios({
             method,
             url: url.toString(),
             data,
-            headers: {
-                apikey: SUPABASE_KEY,
-                Authorization: 'Bearer ' + SUPABASE_KEY
-            }
+            headers
         }).then(({ data }) => data);
     }
 }
