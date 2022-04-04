@@ -25,7 +25,7 @@ class TelegramController {
       return this.handleBotCommand(text);
     }
 
-    let words = supabase.get('/rest/v1/dblist', {
+    let words = await supabase.get('/rest/v1/dblist', {
       select: '*',
       word: 'like.' + text?.trim()
     }).catch((e) => {
