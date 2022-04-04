@@ -20,7 +20,7 @@ export class BaseResponse {
       '😬 တစ်ခုခုတော့မှားနေပြီ။',
     ];
 
-    return messages[Math.floor(Math.random() * messages.length)];
+    return [messages[Math.floor(Math.random() * messages.length)]];
   }
 
   getDictionaryResult(words = []) {
