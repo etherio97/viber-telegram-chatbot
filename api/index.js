@@ -1,14 +1,10 @@
-import { readFileSync } from 'fs';
 import { app } from '../src/app';
-import { router as ip } from './ip';
-import { router as webhook } from './webhook';
-
-app.use('/ip', ip);
+import webhook from './webhook';
 
 app.use('/webhook', webhook);
 
 app.use('*', (req, res) =>
-  res.status(404).send(readFileSync(__dirname + '/../public/404.html', 'utf-8'))
+  res.status(404).json({ error: 404, message: 'route not found' })
 );
 
 export default app;
