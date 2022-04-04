@@ -46,7 +46,7 @@ class TelegramController {
 
     return [
       {
-        text: "I don't under!stand what you mean 😓",
+        text: "ဆောတီးပါ!! 🥺",
       },
     ];
   }

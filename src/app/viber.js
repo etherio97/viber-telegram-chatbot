@@ -19,7 +19,7 @@ export class ResponseMessage {
   sendUnknown() {
     this.messages.push({
       type: 'text',
-      text: "I don't understand what you mean?",
+      text: "I don't understand what you mean? 🥺",
     });
     return this.messages;
   }
