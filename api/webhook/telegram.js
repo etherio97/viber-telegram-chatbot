@@ -33,6 +33,8 @@ class TelegramController {
       return [];
     });
 
+    console.log(words)
+
     if (words.length) {
       return words.map((w) => ({
         text: `*${w.word}* ${w.state}\n${w.def}`,
