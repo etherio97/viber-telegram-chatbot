@@ -1,6 +1,7 @@
 import { db } from '../app/db';
 import { TextMessageUtil } from '../utils/text-message.util';
 import { ResponseMessage, sendMessage } from '../app/viber';
+import supabase from '../app/supabase';
 
 class ViberController {
   async handle(payload) {
@@ -47,14 +48,29 @@ class ViberController {
     return db.remove(`viber_subscribers/${user_id}`);
   }
 
-  onMessage(payload) {
+  async onMessage(payload) {
     let { message } = payload;
 
-    if (!message.text) return;
+    if (!message.text) return [];
+    
+    let words = await supabase.get('/rest/v1/dblist', {
+      select: '*',
+      word: 'like.' + message.text.trim()
+    }).catch((e) => {
+      console.log('webhook.viber#error', e);
+      return [];
+    });
 
-    if (TextMessageUtil.isGreeting(message.text)) {
-      return this.sendGreeting(payload);
+    if (words.length) {
+      return words.map((w) => ({
+        text: `*${w.word}* _(${w.state})_\n${w.defination}`,
+        parse_mode: 'markdown'
+      }));
     }
+
+    // if (TextMessageUtil.isGreeting(message.text)) {
+    //  return this.sendGreeting(payload);
+    // }
 
     return this.sendUnknown(payload);
   }
