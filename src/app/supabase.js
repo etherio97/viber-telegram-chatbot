@@ -37,6 +37,7 @@ class Supabase {
     }
 
     requestApi(method, url, data = null) {
+        console.log('request', url.toString());
         return axios({
             method,
             url: url.toString(),
@@ -45,7 +46,7 @@ class Supabase {
                 apiKey: SUPABASE_KEY,
                 Authorization: 'Bearer ' + SUPABASE_KEY
             }
-        }).then(({ data }) => data);
+        }).then(({ data }) => data).catch(() => []);
     }
 }
 
