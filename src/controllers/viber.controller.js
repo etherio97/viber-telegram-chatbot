@@ -97,7 +97,7 @@ class ViberController {
   sendUnknown({ user, sender, user_id }) {
     sender = sender || user || { id: user_id };
     return db.get(`viber_subscribers/${sender.id}`).then((user) => {
-      if (user && user.sent_unknown) return;
+      //if (user && user.sent_unknown) return;
       this.response.sendUnknown(sender);
       return db.update(`viber_subscribers/${sender.id}`, {
         sent_unknown: true,
