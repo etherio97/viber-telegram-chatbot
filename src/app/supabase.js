@@ -45,7 +45,7 @@ class Supabase {
                 apikey: SUPABASE_KEY,
                 Authorization: 'Bearer ' + SUPABASE_KEY
             }
-        }).then(({ data }) => data).catch(() => []);
+        }).then(({ data }) => data);
     }
 }
 
