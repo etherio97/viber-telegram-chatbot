@@ -27,17 +27,21 @@ class TelegramController {
 
     let words = await supabase.get('/rest/v1/dblist', {
       select: '*',
-      word: 'like.' + text?.trim()
+      word: 'like.' + text ? .trim()
     }).catch((e) => {
       console.log('webhook.webhook.telegram#error', e);
       return [];
     });
 
     if (words.length) {
-      return words.map((w) => ({
-        text: `*${w.word}* _(${w.state})_\n${w.defination}`,
-        parse_mode: 'markdown'
-      }));
+      return [
+        {
+          text: words.map(
+            w => `*${w.word}* _(${w.state})_\n${w.defination}`,
+          ).join('\n\n'),
+          parse_mode: 'markdown'
+        }
+      ];
     }
 
     return [
