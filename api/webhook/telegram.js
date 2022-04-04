@@ -31,12 +31,10 @@ class TelegramController {
     })
 
     if (words.length) {
-      return [
-        {
-          text: `*${words[0].word}* ${words[0].state}\n${words[0].def}`,
-          parse_mode: 'markdown'
-        }
-      ]
+      return words.map((w) => ({
+        text: `*${w.word}* ${w.state}\n${w.def}`,
+        parse_mode: 'markdown'
+      }));
     }
 
     return [
