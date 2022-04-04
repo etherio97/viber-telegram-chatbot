@@ -13,11 +13,11 @@ class TelegramController {
 
   async handleEvent({ chat, from, text, entities }) {
     if (Array.isArray(entities) && this.isBotCommand(entities)) {
-      await this.onBotCommand(text);
+      return this.onBotCommand(text);
     }
 
     if (text) {
-      await this.onMessage(text);
+      return this.onMessage(text);
     }
   }
 
