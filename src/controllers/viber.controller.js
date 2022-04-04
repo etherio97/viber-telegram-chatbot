@@ -62,10 +62,13 @@ class ViberController {
     });
 
     if (words.length) {
-      return words.map((w) => ({
-        text: `*${w.word}* _(${w.state})_\n${w.defination}`,
-        parse_mode: 'markdown'
-      }));
+      this.response.push(
+        ...words.map((w) => ({
+          type: 'text',
+          text: `*${w.word}* _(${w.state})_\n${w.defination}`,
+        }))
+      );
+      return [];
     }
 
     // if (TextMessageUtil.isGreeting(message.text)) {
