@@ -33,7 +33,7 @@ class TelegramController {
     let word = text.trim();
     let a = await this._findWord(word);
     let b = await this._similarWord(word + '%');
-    if (words.length) {
+    if (a.length || b.length) {
       this.response.generateResponse([...a, ...b]);
     } else {
       this.response.generateFallback();
