@@ -31,19 +31,10 @@ class TelegramController {
 
   async onMessage(text) {
     let word = text.trim();
-    let words = await this._similarWord(word + '%');
+    let a = await this._findWord(word);
+    let b = await this._similarWord(word + '%');
     if (words.length) {
-      this.response.generateResponse(words);
-    } else {
-      //await this.findSimilarWord(word);
-      this.response.generateFallback();
-    }
-  }
-  
-  async findSimilarWord(word) {
-    let words = await this._similarWord(word + '');
-    if (words.length) {
-      this.response.generateResponse(words);
+      this.response.generateResponse([...a, ...b]);
     } else {
       this.response.generateFallback();
     }
