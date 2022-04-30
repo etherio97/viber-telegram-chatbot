@@ -40,7 +40,7 @@ class TelegramController {
   }
   
   async findSimilarWord(word) {
-    let words = await this._similarWord(word);
+    let words = await this._similarWord(word + '%');
     if (words.length) {
       this.response.generateResponse(words);
     } else {
