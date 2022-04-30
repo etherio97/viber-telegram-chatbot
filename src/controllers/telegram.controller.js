@@ -53,11 +53,15 @@ class TelegramController {
   }
   
   _findWord(w) {
-    return supabase.post('/rest/v1/rpc/find_word', { w }).catch((e) => []);
+    return supabase
+      .post('/rest/v1/rpc/find_word', { w })
+      .catch((e) => []);
   }
   
   _similarWord(w, x = 5) {
-    return supabase.post('/rest/v1/rpc/similar_word', { w, x }).catch((e) => []);
+    return supabase
+      .post('/rest/v1/rpc/similar_word', { w, x })
+      .catch((e) => []);
   }
 }
 

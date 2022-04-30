@@ -20,15 +20,34 @@ class ViberController {
   }
 
   async onMessage({ message }) {
-    let words = await supabase
-      .post('/rest/v1/rpc/find_word', { w: message.text?.trim() })
-      .catch((e) => []);
-
+    let word = message.text?.trim();
+    let words = await this._findWord(word);
+    if (words.length) {
+      this.response.generateResponse(words);
+    } else {
+      await this.findSimilarWord(word);
+    }
+  }
+  
+  async findSimilarWord(word) {
+    let words = await this._similarWord(word);
     if (words.length) {
       this.response.generateResponse(words);
     } else {
       this.response.generateFallback();
     }
+  }
+  
+  _findWord(w) {
+    return supabase
+      .post('/rest/v1/rpc/find_word', { w })
+      .catch((e) => []);
+  }
+
+  _similarWord(w, x = 5) {
+    return supabase
+      .post('/rest/v1/rpc/similar_word', { w, x })
+      .catch((e) => []);
   }
 }
 
