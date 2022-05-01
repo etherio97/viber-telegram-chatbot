@@ -22,7 +22,8 @@ class ViberController {
   async onMessage({ message }) {
     let word = message.text?.trim();
     let a = await this._findWord(word);
-    let b = await this._similarWord(word + '%');
+    let b = (await this._similarWord(word + '%'))
+      .filter(w => !a.map(w => w.word).includes(w.word));
     if (a.length || b.length) {
       this.response.generateResponse([...a, ...b]);
     } else {
