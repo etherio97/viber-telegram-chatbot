@@ -20,7 +20,7 @@ class TelegramController {
     }
 
     if (text) {
-      return this.onMessage(text);
+      return this.onMessage(text.trim());
     }
   }
 
@@ -33,17 +33,18 @@ class TelegramController {
   }
 
   async onMessage(text) {
-    let word = text.trim();
-
-    if (word.match(/[က-၏]/)) {
-      let result = await this._findBurmese('%' + word + '%');
+    if (text.match(/^\.add (.*)/)) {
+      console.log('adding new data');
+      await this.addNewData(...text.slice(5).split(','));
+    } else if (text.match(/[က-၏]/)) {
+      let result = await this._findBurmese('%' + text + '%');
       let fuse = new Fuse(result, {
         keys: ['defination'],
       });
       if (result.length) {
         this.response.generateResponse([
           ...fuse
-            .search(word)
+            .search(text)
             .map(({ item }) => item)
             .slice(0, 10),
         ]);
@@ -51,9 +52,9 @@ class TelegramController {
         this.response.generateFallback();
       }
     } else {
-      let a = await this._findWord(word);
-      let b = (await this._similarWord(word + '%')).filter(
-        (w) => !a.map((w) => w.word).includes(w.word)
+      let a = await this._findWord(text);
+      let b = (await this._similarWord(text + '%')).filter(
+        (w) => !a.map((w) => w.text).includes(w.text)
       );
       if (a.length || b.length) {
         this.response.generateResponse([...a, ...b]);
@@ -61,6 +62,10 @@ class TelegramController {
         this.response.generateFallback();
       }
     }
+  }
+
+  async addNewData(word, state, defination) {
+    console.log({ word, state, defination });
   }
 
   isBotCommand(entities) {
