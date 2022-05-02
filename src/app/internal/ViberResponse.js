@@ -1,16 +1,21 @@
 import { BaseResponse } from './BaseResponse';
-import sendMessage from './telegram';
+import sendMessage from '../viber';
 
-export class TelegramResponse extends BaseResponse {
+export class ViberResponse extends BaseResponse {
   generateGreeting() {
-    this.pushMessages(this.getDefaultMessages().map((text) => ({ text })));
+    this.pushMessages(
+      this.getDefaultMessages().map((text) => ({
+        type: 'text',
+        text,
+      }))
+    );
   }
 
   generateFallback() {
     this.pushMessages(
       this.getFallbackMessages().map((text) => ({
+        type: 'text',
         text,
-        parse_mode: 'markdown',
       }))
     );
   }
@@ -18,15 +23,15 @@ export class TelegramResponse extends BaseResponse {
   generateResponse(words) {
     this.pushMessages(
       this.getDictionaryResult(words).map((text) => ({
+        type: 'text',
         text,
-        parse_mode: 'markdown',
       }))
     );
   }
 
-  async send(chat_id) {
+  async send(reciever) {
     for (let message of this.messages) {
-      await sendMessage(chat_id, message);
+      await sendMessage(reciever, message);
     }
   }
 }

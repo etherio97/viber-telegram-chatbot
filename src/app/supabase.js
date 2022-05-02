@@ -1,53 +1,45 @@
 import axios from 'axios';
 import { env } from 'process';
 
-const { SUPABASE_URL, SUPABASE_KEY } = env;
+const requestApi = (method, path, params = {}, data = undefined, headers = {}) => axios({
+  method,
+  data,
+  url: [env.SUPABASE_URL, path, '?', new URLSearchParams(params).toString()].join(''),
+  headers: {
+    apikey: SUPABASE_KEY,
+    Authorization: 'Bearer ' + env.SUPABASE_KEY,
+    ...headers,
+  },
+})
+.then(({ data }) => data);
 
 class Supabase {
+  rpc(name, data) {
+    return this.post('/rest/v1/rpc/' + name, {}, data);
+  }
+  
+  find(name, params = {}, data) {
+    return this.post('/rest/v1/' + name, params, data);
+  }
+
   get(path, params = {}) {
-    return this.requestApi('GET', this.buildUrl(path, params));
+    return requestApi('GET', path, params);
   }
 
-  post(path, data) {
-    return this.requestApi('POST', this.buildUrl(path), data);
+  post(path, params = {}, data) {
+    return requestApi('POST', path, params, data);
   }
 
-  put(path, data) {
-    return this.requestApi('PUT', this.buildUrl(path), data);
+  put(path, params = {}, data) {
+    return requestApi('PUT', path, params, data);
   }
 
-  patch(path, data) {
-    return this.requestApi('PATCH', this.buildUrl(path), data);
+  patch(path, params = {}, data) {
+    return requestApi('PATCH', path, params, data);
   }
 
-  delete(path) {
-    return this.requestApi('DELETE', this.buildUrl(path));
-  }
-
-  buildUrl(path, params = {}) {
-    let url = new URL(SUPABASE_URL);
-
-    for (let key in params) {
-      url.searchParams.append(key, params[key]);
-    }
-
-    url.pathname = path;
-
-    return url;
-  }
-
-  requestApi(method, url, data = null) {
-    let headers = {
-      apikey: SUPABASE_KEY,
-      Authorization: 'Bearer ' + SUPABASE_KEY,
-    };
-
-    return axios({
-      method,
-      url: url.toString(),
-      data,
-      headers,
-    }).then(({ data }) => data);
+  delete(path, params = {}) {
+    return requestApi('DELETE', path, params);
   }
 }
 

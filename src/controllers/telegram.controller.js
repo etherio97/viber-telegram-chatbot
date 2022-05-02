@@ -1,10 +1,8 @@
-import Fuse from 'fuse.js';
-import supabase from '../app/supabase';
-import { TelegramResponse } from '../app/TelegramResponse';
+import { TelegramResponse } from '../app/internal/TelegramResponse';
+import { findWord, findBurmese, similarWord } from '../app/dict';
+import { sortItems } from '../utils/helpers';
 
 class TelegramController {
-  isPrivate = false;
-
   async handle(payload) {
     if (payload.message) {
       let sender = payload.message.chat || payload.message.from;
@@ -14,32 +12,27 @@ class TelegramController {
     }
   }
 
-  async handleEvent({ chat, from, text, entities }) {
+  async handleEvent(sender) {
     console.log({ chat, from });
-
     if (chat.type === 'private') {
-      if (Array.isArray(entities) && this.isBotCommand(entities)) {
-        return this.onBotCommand(text);
-      }
-      if (text) {
-        return this.onMessage(text.trim());
-      }
+      await this.handlePrivate(sender);
     } else {
-      /**
-      if (text.match(/^\.add (.*)/)) {
-        console.log('adding new data');
-        await this.addNewData(...text.slice(5).split(','));
-      } else if (text.match(/^\.edit (.*)/)) {
-        console.log('updating data');
-        await this.addNewData(...text.slice(6).split(','));
-      } else if (text.match(/^\.del (.*)/)) {
-        console.log('deleting data');
-        await this.addNewData(...text.slice(5).split(','));
-      }
-      */
+      await this.handleGroup(sender);
+    } 
+  }
+  
+  async handleGroup({ chat, from, text, entities }) {
+    //
+  }
+  
+  async handlePrivate({ chat, from, text, entities }) {
+    if (Array.isArray(entities) && this.isBotCommand(entities)) {
+      await this.onBotCommand(text);
+    } else if (text) {
+      await this.onMessage(text.trim());
     }
   }
-
+  
   async onBotCommand(text) {
     switch (text) {
       case '/start':
@@ -50,67 +43,31 @@ class TelegramController {
 
   async onMessage(text) {
     if (text.match(/[က-၏]/)) {
-      let result = await this._findBurmese('%' + text + '%');
-      let fuse = new Fuse(result, {
-        keys: ['defination'],
-      });
+      let result = sortItems(['definition'], await findBurmese('%' + text + '%', 100), text);
       if (result.length) {
-        this.response.generateResponse([
-          ...fuse
-            .search(text)
-            .map(({ item }) => item)
-            .slice(0, 10),
-        ]);
+        this.response.generateResponse(
+          result.slice(0, 10)
+        );
       } else {
         this.response.generateFallback();
       }
     } else {
-      let a = await this._findWord(text);
-      let b = (await this._similarWord(text + '%')).filter(
+      let a = await findWord(text);
+      let b = (await similarWord(text + '%')).filter(
         (w) => !a.map((w) => w.text).includes(w.text)
       );
       if (a.length || b.length) {
-        this.response.generateResponse([...a, ...b]);
+        this.response.generateResponse(
+          sortItems(['word'], a.concat(b), text)
+        );
       } else {
         this.response.generateFallback();
       }
     }
   }
 
-  async addNewData(word, state, defination) {
-    await supabase.post('/rest/v1/dblist', { word, state, defination });
-  }
-
-  async updateData(id, word, state, defination) {
-    await supabase.patch('/rest/v1/dblist?id=eq.' + id, {
-      word,
-      state,
-      defination,
-    });
-  }
-
-  async deleteData(id) {
-    await supabase.delete('/rest/v1/dblist?id=eq.' + id);
-  }
-
   isBotCommand(entities) {
     return !!entities.find((v) => v.type == 'bot_command');
-  }
-
-  _findBurmese(word_input, max_rows = 100) {
-    return supabase
-      .post('/rest/v1/rpc/search_burmese', { word_input, max_rows })
-      .catch((e) => []);
-  }
-
-  _findWord(w) {
-    return supabase.post('/rest/v1/rpc/find_word', { w }).catch((e) => []);
-  }
-
-  _similarWord(w, x = 5) {
-    return supabase
-      .post('/rest/v1/rpc/similar_word', { w, x })
-      .catch((e) => []);
   }
 }
 

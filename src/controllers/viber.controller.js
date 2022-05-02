@@ -1,6 +1,7 @@
-import Fuse from 'fuse.js';
-import supabase from '../app/supabase';
-import { ViberResponse } from '../app/ViberResponse';
+import { findWord, findBurmese, similarWord } from '../app/dict';
+import { sortItems } from '../utils/helpers';
+
+import { ViberResponse } from '../app/internal/ViberResponse';
 
 class ViberController {
   async handle(payload) {
@@ -21,49 +22,29 @@ class ViberController {
   }
 
   async onMessage({ message }) {
-    let word = message.text?.trim();
-    if (word.match(/[က-၏]/)) {
-      let result = await this._findBurmese('%' + word + '%');
-      let fuse = new Fuse(result, {
-        keys: ['defination'],
-      });
+    let text = message.text?.trim();
+    if (text.match(/[က-၏]/)) {
+      let result = sortItems(['definition'], await findBurmese('%' + text + '%', 100), text);
       if (result.length) {
-        this.response.generateResponse([
-          ...fuse
-            .search(word)
-            .map(({ item }) => item)
-            .slice(0, 10),
-        ]);
+        this.response.generateResponse(
+          result.slice(0, 10)
+        );
       } else {
         this.response.generateFallback();
       }
     } else {
-      let a = await this._findWord(word);
-      let b = (await this._similarWord(word + '%')).filter(
+      let a = await findWord(word);
+      let b = (await similarWord(word + '%')).filter(
         (w) => !a.map((w) => w.word).includes(w.word)
       );
       if (a.length || b.length) {
-        this.response.generateResponse([...a, ...b]);
+          this.response.generateResponse(
+          sortItems(['word'], a.concat(b), text)
+        );
       } else {
         this.response.generateFallback();
       }
     }
-  }
-
-  _findBurmese(word_input, max_rows = 100) {
-    return supabase
-      .post('/rest/v1/rpc/search_burmese', { word_input, max_rows })
-      .catch((e) => []);
-  }
-
-  _findWord(w) {
-    return supabase.post('/rest/v1/rpc/find_word', { w }).catch((e) => []);
-  }
-
-  _similarWord(w, x = 5) {
-    return supabase
-      .post('/rest/v1/rpc/similar_word', { w, x })
-      .catch((e) => []);
   }
 }
 
