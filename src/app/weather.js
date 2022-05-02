@@ -4,7 +4,7 @@ const BASE_URL = 'https://www.metaweather.com';
 
 class Weather {
   searchLocation(query) {
-    return this._sendApi('GET', '/api/search', { query });
+    return this._sendApi('GET', '/api/location/search', { query });
   }
 
   getLocation(geoid) {
