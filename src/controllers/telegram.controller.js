@@ -38,10 +38,12 @@ class TelegramController {
       let fuse = new Fuse(result, {
         keys: ['defination'],
       });
-      console.log('burmese');
       if (result.length) {
         this.response.generateResponse([
-          ...fuse.search(word).map(({ item }) => item),
+          ...fuse
+            .search(word)
+            .map(({ item }) => item)
+            .slice(0, 10),
         ]);
       } else {
         this.response.generateFallback();
