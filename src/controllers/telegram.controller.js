@@ -43,7 +43,7 @@ class TelegramController {
   async onMessage(text) {
     if (text.match(/[က-၏]/)) {
       let result = sortItems(
-        ['definition'],
+        ['defination'],
         await findBurmese('%' + text + '%', 100),
         text
       );

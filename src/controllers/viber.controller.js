@@ -24,7 +24,11 @@ class ViberController {
   async onMessage({ message }) {
     let text = message.text?.trim();
     if (text.match(/[က-၏]/)) {
-      let result = sortItems(['definition'], await findBurmese('%' + text + '%', 100), text);
+      let result = sortItems(
+        ['defination'],
+        await findBurmese('%' + text + '%', 100),
+        text
+      );
       if (result.length) {
         this.response.generateResponse(
           result.slice(0, 10)

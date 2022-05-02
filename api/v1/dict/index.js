@@ -26,7 +26,11 @@ router.get('/match/mm', async (req, res) => {
   }
   let text = q.trim();
   res.json(
-    sortItems(['definition'], await findBurmese(text, 100), text)
+    sortItems(
+      ['defination'],
+      await findBurmese(text, 100),
+      text
+    )
   );
 });
 
@@ -39,7 +43,11 @@ router.get('/search/en', async (req, res) => {
   }
   let text = q.trim();
   res.json(
-    sortItems(['definition'], await findWord(text + '%'), text)
+    sortItems(
+      ['word'],
+      await findWord(text + '%'),
+      text
+    )
   );
 });
 
@@ -52,9 +60,12 @@ router.get('/search/mm', async (req, res) => {
   }
   let text = q.trim();
   res.json(
-    sortItems(['definition'], await findBurmese('%' + text + '%'), text)
+    sortItems(
+      ['defination'],
+      await findBurmese('%' + text + '%'),
+      text
+    )
   );
 });
-
 
 export default router;
