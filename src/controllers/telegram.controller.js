@@ -25,7 +25,16 @@ class TelegramController {
         return this.onMessage(text.trim());
       }
     } else {
-      console.log('from group');
+      if (text.match(/^\.add (.*)/)) {
+        console.log('adding new data');
+        await this.addNewData(...text.slice(5).split(','));
+      } else if (text.match(/^\.edit (.*)/)) {
+        console.log('updating data');
+        await this.addNewData(...text.slice(6).split(','));
+      } else if (text.match(/^\.del (.*)/)) {
+        console.log('deleting data');
+        await this.addNewData(...text.slice(5).split(','));
+      }
     }
   }
 
@@ -38,10 +47,7 @@ class TelegramController {
   }
 
   async onMessage(text) {
-    if (text.match(/^\.add (.*)/)) {
-      console.log('adding new data');
-      await this.addNewData(...text.slice(5).split(','));
-    } else if (text.match(/[က-၏]/)) {
+    if (text.match(/[က-၏]/)) {
       let result = await this._findBurmese('%' + text + '%');
       let fuse = new Fuse(result, {
         keys: ['defination'],
@@ -70,7 +76,19 @@ class TelegramController {
   }
 
   async addNewData(word, state, defination) {
-    console.log({ word, state, defination });
+    await supabase.post('/rest/v1/dblist', { word, state, defination });
+  }
+
+  async updateData(id, word, state, defination) {
+    await supabase.patch('/rest/v1/dblist?id=eq.' + id, {
+      word,
+      state,
+      defination,
+    });
+  }
+
+  async deleteData(id) {
+    await supabase.delete('/rest/v1/dblist?id=eq.' + id);
   }
 
   isBotCommand(entities) {
