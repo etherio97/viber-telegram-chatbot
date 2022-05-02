@@ -13,7 +13,6 @@ class TelegramController {
   }
 
   async handleEvent(sender) {
-    console.log({ chat, from });
     if (chat.type === 'private') {
       await this.handlePrivate(sender);
     } else {
