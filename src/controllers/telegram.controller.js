@@ -25,6 +25,7 @@ class TelegramController {
         return this.onMessage(text.trim());
       }
     } else {
+      /**
       if (text.match(/^\.add (.*)/)) {
         console.log('adding new data');
         await this.addNewData(...text.slice(5).split(','));
@@ -35,6 +36,7 @@ class TelegramController {
         console.log('deleting data');
         await this.addNewData(...text.slice(5).split(','));
       }
+      */
     }
   }
 
