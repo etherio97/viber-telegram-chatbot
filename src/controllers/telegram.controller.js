@@ -3,6 +3,8 @@ import supabase from '../app/supabase';
 import { TelegramResponse } from '../app/TelegramResponse';
 
 class TelegramController {
+  isPrivate = false;
+
   async handle(payload) {
     if (payload.message) {
       let sender = payload.message.chat || payload.message.from;
@@ -15,12 +17,15 @@ class TelegramController {
   async handleEvent({ chat, from, text, entities }) {
     console.log({ chat, from });
 
-    if (Array.isArray(entities) && this.isBotCommand(entities)) {
-      return this.onBotCommand(text);
-    }
-
-    if (text) {
-      return this.onMessage(text.trim());
+    if (chat.type === 'private') {
+      if (Array.isArray(entities) && this.isBotCommand(entities)) {
+        return this.onBotCommand(text);
+      }
+      if (text) {
+        return this.onMessage(text.trim());
+      }
+    } else {
+      console.log('from group');
     }
   }
 
