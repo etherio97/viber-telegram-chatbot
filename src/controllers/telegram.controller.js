@@ -65,7 +65,7 @@ class TelegramController {
 
   _findBurmese(word_input, max_rows = 100) {
     return supabase
-      .post('/rest/v1/rpc/find_burmese', { word_input, max_rows })
+      .post('/rest/v1/rpc/search_burmese', { word_input, max_rows })
       .catch((e) => []);
   }
 
