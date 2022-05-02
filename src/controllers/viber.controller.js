@@ -38,7 +38,7 @@ class ViberController {
         (w) => !a.map((w) => w.word).includes(w.word)
       );
       if (a.length || b.length) {
-          this.response.generateResponse(
+        this.response.generateResponse(
           sortItems(['word'], a.concat(b), text)
         );
       } else {
