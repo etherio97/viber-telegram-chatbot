@@ -1,5 +1,5 @@
 import { BaseResponse } from './BaseResponse';
-import sendMessage from '../telegram';
+import { sendMessage } from '../telegram';
 
 export class TelegramResponse extends BaseResponse {
   generateGreeting() {

@@ -1,5 +1,5 @@
 import { BaseResponse } from './BaseResponse';
-import sendMessage from '../viber';
+import { sendMessage } from '../viber';
 
 export class ViberResponse extends BaseResponse {
   generateGreeting() {
