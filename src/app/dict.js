@@ -8,14 +8,14 @@ export const findBurmese = (word_input, max_rows) => supabase
   });
 
 export const findWord = (w) => supabase
-  .post('find_word', { w })
+  .rpc('find_word', { w })
   .catch((e) => {
     console.error(e);
     return [];
   });
   
 export const similarWord = (w, x = 5) => supabase
-  .post('similar_word', { w, x })
+  .rpc('similar_word', { w, x })
   .catch((e) => {
     console.error(e);
     return [];
