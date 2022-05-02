@@ -44,7 +44,7 @@ class ViberController {
       } else {
         this.response.generateFallback();
       }
-    }
+  }
   }
 }
 

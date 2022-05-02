@@ -5,7 +5,7 @@ const requestApi = (method, path, params = {}, data = undefined, headers = {}) =
   axios({
     method,
     data,
-    url: [env.SUPABASE_URL, path, '?', new URLSearchParams(params).toString()].join(''),
+    url: [env.SUPABASE_URL, path, Object.keys(params).length ? '?' + new URLSearchParams(params).toString() : ''].join(''),
     headers: {
       apikey: env.SUPABASE_KEY,
       Authorization: 'Bearer ' + env.SUPABASE_KEY,
