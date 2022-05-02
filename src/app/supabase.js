@@ -19,10 +19,6 @@ class Supabase {
     return this.post('/rest/v1/rpc/' + name, {}, data);
   }
   
-  find(name, params = {}, data) {
-    return this.post('/rest/v1/' + name, params, data);
-  }
-
   get(path, params = {}) {
     return requestApi('GET', path, params);
   }
