@@ -13,6 +13,8 @@ class TelegramController {
   }
 
   async handleEvent({ chat, from, text, entities }) {
+    console.log({ chat, from });
+
     if (Array.isArray(entities) && this.isBotCommand(entities)) {
       return this.onBotCommand(text);
     }
