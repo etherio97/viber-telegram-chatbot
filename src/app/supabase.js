@@ -1,17 +1,18 @@
 import axios from 'axios';
 import { env } from 'process';
 
-const requestApi = (method, path, params = {}, data = undefined, headers = {}) => axios({
-  method,
-  data,
-  url: [env.SUPABASE_URL, path, '?', new URLSearchParams(params).toString()].join(''),
-  headers: {
-    apikey: env.SUPABASE_KEY,
-    Authorization: 'Bearer ' + env.SUPABASE_KEY,
-    ...headers,
-  },
-})
-.then(({ data }) => data);
+const requestApi = (method, path, params = {}, data = undefined, headers = {}) =>
+  axios({
+    method,
+    data,
+    url: [env.SUPABASE_URL, path, '?', new URLSearchParams(params).toString()].join(''),
+    headers: {
+      apikey: env.SUPABASE_KEY,
+      Authorization: 'Bearer ' + env.SUPABASE_KEY,
+      ...headers,
+    },
+  })
+  .then(({ data }) => data);
 
 class Supabase {
   rpc(name, data) {

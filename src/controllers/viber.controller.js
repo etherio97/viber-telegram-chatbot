@@ -33,8 +33,8 @@ class ViberController {
         this.response.generateFallback();
       }
     } else {
-      let a = await findWord(word);
-      let b = (await similarWord(word + '%')).filter(
+      let a = await findWord(text);
+      let b = (await similarWord(text + '%')).filter(
         (w) => !a.map((w) => w.word).includes(w.word)
       );
       if (a.length || b.length) {
