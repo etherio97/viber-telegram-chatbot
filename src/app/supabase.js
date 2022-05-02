@@ -6,7 +6,7 @@ const requestApi = (method, path, params = {}, data = undefined, headers = {}) =
   data,
   url: [env.SUPABASE_URL, path, '?', new URLSearchParams(params).toString()].join(''),
   headers: {
-    apikey: SUPABASE_KEY,
+    apikey: env.SUPABASE_KEY,
     Authorization: 'Bearer ' + env.SUPABASE_KEY,
     ...headers,
   },
